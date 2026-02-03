@@ -1,21 +1,110 @@
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { SummaryCards } from "@/components/dashboard/SummaryCards";
+import { StatusChart } from "@/components/dashboard/StatusChart";
+import { TimelineChart } from "@/components/dashboard/TimelineChart";
+import { DepartmentChart } from "@/components/dashboard/DepartmentChart";
+import { LocationChart } from "@/components/dashboard/LocationChart";
+import { ApplicationsTable } from "@/components/dashboard/ApplicationsTable";
+import { ApplicationForm } from "@/components/dashboard/ApplicationForm";
+import { useApplications } from "@/hooks/useApplications";
+import { Application } from "@/types/application";
+import { triggerSuccessConfetti } from "@/lib/confetti";
+import { useToast } from "@/hooks/use-toast";
+
 const Index = () => {
+  const { applications, addApplication, updateApplication, deleteApplication } = useApplications();
+  const { toast } = useToast();
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingApp, setEditingApp] = useState<Application | null>(null);
+
+  const handleAdd = () => {
+    setEditingApp(null);
+    setFormOpen(true);
+  };
+
+  const handleEdit = (app: Application) => {
+    setEditingApp(app);
+    setFormOpen(true);
+  };
+
+  const handleSubmit = (data: Omit<Application, "id" | "createdAt" | "updatedAt">) => {
+    if (editingApp) {
+      updateApplication(editingApp.id, data);
+      toast({
+        title: "Application updated",
+        description: `Updated ${data.position} at ${data.company}`,
+      });
+    } else {
+      addApplication(data);
+      triggerSuccessConfetti();
+      toast({
+        title: "Application added! 🎉",
+        description: `Added ${data.position} at ${data.company}`,
+      });
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    const app = applications.find((a) => a.id === id);
+    deleteApplication(id);
+    toast({
+      title: "Application deleted",
+      description: app ? `Removed ${app.position} at ${app.company}` : "Application removed",
+      variant: "destructive",
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
-      <div className="text-center space-y-6 max-w-md">
-        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-4">
-          <span className="text-4xl">🚀</span>
-        </div>
-        <h1 className="text-4xl font-bold tracking-tight text-foreground">
-          Coming Soon
-        </h1>
-        <p className="text-lg text-muted-foreground">
-          We're working on something exciting. Stay tuned!
-        </p>
-        <div className="pt-4">
-          <div className="h-1 w-24 mx-auto bg-primary/30 rounded-full overflow-hidden">
-            <div className="h-full w-1/2 bg-primary rounded-full animate-pulse" />
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">
+              Internship Tracker
+            </h1>
+            <p className="text-muted-foreground">
+              Track and analyze your internship applications
+            </p>
           </div>
+          <Button onClick={handleAdd} className="btn-cta w-full sm:w-auto">
+            <Plus className="mr-2 h-4 w-4" />
+            Add Application
+          </Button>
         </div>
+
+        {/* Summary Cards */}
+        <section className="mb-8">
+          <SummaryCards applications={applications} />
+        </section>
+
+        {/* Charts */}
+        <section className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <StatusChart applications={applications} />
+          <TimelineChart applications={applications} />
+          <DepartmentChart applications={applications} />
+          <LocationChart applications={applications} />
+        </section>
+
+        {/* Applications Table */}
+        <section>
+          <h2 className="mb-4 text-xl font-semibold">All Applications</h2>
+          <ApplicationsTable
+            applications={applications}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        </section>
+
+        {/* Add/Edit Form Modal */}
+        <ApplicationForm
+          open={formOpen}
+          onOpenChange={setFormOpen}
+          application={editingApp}
+          onSubmit={handleSubmit}
+        />
       </div>
     </div>
   );
