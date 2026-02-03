@@ -1,6 +1,6 @@
 export type ApplicationStatus = "Applied" | "Interview" | "Offer" | "Rejected";
 
-export type Department = 
+export type PredefinedDepartment = 
   | "Engineering" 
   | "Product" 
   | "Design" 
@@ -9,14 +9,13 @@ export type Department =
   | "Finance" 
   | "HR" 
   | "Operations" 
-  | "Data Science" 
-  | "Other";
+  | "Data Science";
 
 export interface Application {
   id: string;
   company: string;
   position: string;
-  department: Department;
+  department: string; // Can be predefined or custom
   status: ApplicationStatus;
   dateApplied: string;
   notes: string;
@@ -26,7 +25,7 @@ export interface Application {
 
 export const STATUS_OPTIONS: ApplicationStatus[] = ["Applied", "Interview", "Offer", "Rejected"];
 
-export const DEPARTMENT_OPTIONS: Department[] = [
+export const PREDEFINED_DEPARTMENTS: PredefinedDepartment[] = [
   "Engineering",
   "Product",
   "Design",
@@ -36,5 +35,7 @@ export const DEPARTMENT_OPTIONS: Department[] = [
   "HR",
   "Operations",
   "Data Science",
-  "Other",
 ];
+
+// Keep for backwards compatibility - includes "Other" for dropdown
+export const DEPARTMENT_OPTIONS = [...PREDEFINED_DEPARTMENTS, "Other"] as const;
