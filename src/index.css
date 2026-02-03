@@ -158,3 +158,35 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* CTA Button Animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px hsl(var(--primary) / 0.4),
+                0 0 10px hsl(var(--primary) / 0.3),
+                0 0 15px hsl(var(--primary) / 0.2);
+  }
+  50% {
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.6),
+                0 0 20px hsl(var(--primary) / 0.4),
+                0 0 30px hsl(var(--primary) / 0.3);
+  }
+}
+
+.btn-cta {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.btn-cta:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 15px hsl(var(--primary) / 0.5),
+              0 0 25px hsl(var(--primary) / 0.4),
+              0 0 35px hsl(var(--primary) / 0.3),
+              0 10px 20px hsl(0 0% 0% / 0.15);
+}
+
+.btn-cta:active {
+  transform: translateY(0) scale(0.98);
+}
