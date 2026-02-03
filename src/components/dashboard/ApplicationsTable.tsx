@@ -37,6 +37,16 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Application, ApplicationStatus, STATUS_OPTIONS } from "@/types/application";
 import { StatusBadge } from "./StatusBadge";
 
@@ -59,6 +69,21 @@ export function ApplicationsTable({
   const [sortKey, setSortKey] = useState<SortKey>("dateApplied");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [appToDelete, setAppToDelete] = useState<Application | null>(null);
+
+  const handleDeleteClick = (app: Application) => {
+    setAppToDelete(app);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (appToDelete) {
+      onDelete(appToDelete.id);
+      setDeleteDialogOpen(false);
+      setAppToDelete(null);
+    }
+  };
 
   const toggleRow = (id: string) => {
     setExpandedRows((prev) => {
@@ -238,7 +263,7 @@ export function ApplicationsTable({
                               Edit
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                              onClick={() => onDelete(app.id)}
+                              onClick={() => handleDeleteClick(app)}
                               className="text-destructive"
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
@@ -266,6 +291,35 @@ export function ApplicationsTable({
           </TableBody>
         </Table>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Application</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete the application for{" "}
+              <span className="font-medium text-foreground">
+                {appToDelete?.position}
+              </span>{" "}
+              at{" "}
+              <span className="font-medium text-foreground">
+                {appToDelete?.company}
+              </span>
+              ? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
