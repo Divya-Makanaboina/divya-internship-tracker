@@ -35,7 +35,7 @@ export function StatusChart({ applications }: StatusChartProps) {
 
   if (data.length === 0) {
     return (
-      <Card>
+      <Card className="transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/50">
         <CardHeader>
           <CardTitle className="text-base">Status Breakdown</CardTitle>
         </CardHeader>
@@ -47,7 +47,7 @@ export function StatusChart({ applications }: StatusChartProps) {
   }
 
   return (
-    <Card>
+    <Card className="transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/50">
       <CardHeader>
         <CardTitle className="text-base">Status Breakdown</CardTitle>
       </CardHeader>

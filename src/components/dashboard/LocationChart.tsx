@@ -28,7 +28,7 @@ export function LocationChart({ applications }: LocationChartProps) {
 
   if (data.length === 0) {
     return (
-      <Card>
+      <Card className="transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/50">
         <CardHeader>
           <CardTitle className="text-base">Geographic Distribution</CardTitle>
         </CardHeader>
@@ -40,7 +40,7 @@ export function LocationChart({ applications }: LocationChartProps) {
   }
 
   return (
-    <Card>
+    <Card className="transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/50">
       <CardHeader>
         <CardTitle className="text-base">Geographic Distribution</CardTitle>
       </CardHeader>
