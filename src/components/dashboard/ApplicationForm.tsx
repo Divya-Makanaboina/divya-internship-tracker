@@ -38,7 +38,6 @@ import { cn } from "@/lib/utils";
 import {
   Application,
   ApplicationStatus,
-  Department,
   STATUS_OPTIONS,
   DEPARTMENT_OPTIONS,
 } from "@/types/application";
@@ -46,10 +45,19 @@ import {
 const formSchema = z.object({
   company: z.string().min(1, "Company name is required"),
   position: z.string().min(1, "Position is required"),
-  department: z.enum(DEPARTMENT_OPTIONS as [Department, ...Department[]]),
+  departmentSelect: z.string().min(1, "Department is required"),
+  customDepartment: z.string().optional(),
   status: z.enum(STATUS_OPTIONS as [ApplicationStatus, ...ApplicationStatus[]]),
   dateApplied: z.date({ required_error: "Application date is required" }),
   notes: z.string(),
+}).refine((data) => {
+  if (data.departmentSelect === "Other") {
+    return data.customDepartment && data.customDepartment.trim().length > 0;
+  }
+  return true;
+}, {
+  message: "Please enter a custom department",
+  path: ["customDepartment"],
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -72,19 +80,25 @@ export function ApplicationForm({
     defaultValues: {
       company: "",
       position: "",
-      department: "Engineering",
+      departmentSelect: "Engineering",
+      customDepartment: "",
       status: "Applied",
       dateApplied: new Date(),
       notes: "",
     },
   });
 
+  const selectedDepartment = form.watch("departmentSelect");
+
   useEffect(() => {
     if (application) {
+      // Check if the department is a predefined one or custom
+      const isPredefined = DEPARTMENT_OPTIONS.includes(application.department as typeof DEPARTMENT_OPTIONS[number]);
       form.reset({
         company: application.company,
         position: application.position,
-        department: application.department,
+        departmentSelect: isPredefined ? application.department : "Other",
+        customDepartment: isPredefined ? "" : application.department,
         status: application.status,
         dateApplied: new Date(application.dateApplied),
         notes: application.notes,
@@ -93,7 +107,8 @@ export function ApplicationForm({
       form.reset({
         company: "",
         position: "",
-        department: "Engineering",
+        departmentSelect: "Engineering",
+        customDepartment: "",
         status: "Applied",
         dateApplied: new Date(),
         notes: "",
@@ -102,10 +117,14 @@ export function ApplicationForm({
   }, [application, form, open]);
 
   const handleSubmit = (values: FormValues) => {
+    const department = values.departmentSelect === "Other" 
+      ? values.customDepartment!.trim() 
+      : values.departmentSelect;
+    
     onSubmit({
       company: values.company,
       position: values.position,
-      department: values.department,
+      department,
       status: values.status,
       dateApplied: values.dateApplied.toISOString(),
       notes: values.notes,
@@ -152,7 +171,7 @@ export function ApplicationForm({
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="department"
+                name="departmentSelect"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Department</FormLabel>
@@ -199,6 +218,21 @@ export function ApplicationForm({
                 )}
               />
             </div>
+            {selectedDepartment === "Other" && (
+              <FormField
+                control={form.control}
+                name="customDepartment"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Custom Department</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter department name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="dateApplied"
