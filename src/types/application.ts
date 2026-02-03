@@ -16,6 +16,7 @@ export interface Application {
   company: string;
   position: string;
   department: string; // Can be predefined or custom
+  location: string; // Job location (city, country, or "Remote")
   status: ApplicationStatus;
   dateApplied: string;
   notes: string;
