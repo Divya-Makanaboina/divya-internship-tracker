@@ -45,7 +45,7 @@ export function SummaryCards({ applications }: SummaryCardsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       {cards.map((card) => (
-        <Card key={card.title}>
+        <Card key={card.title} className="transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/50 cursor-default">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
             <card.icon className="h-4 w-4 text-muted-foreground" />
