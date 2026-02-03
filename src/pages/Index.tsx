@@ -5,6 +5,7 @@ import { SummaryCards } from "@/components/dashboard/SummaryCards";
 import { StatusChart } from "@/components/dashboard/StatusChart";
 import { TimelineChart } from "@/components/dashboard/TimelineChart";
 import { DepartmentChart } from "@/components/dashboard/DepartmentChart";
+import { LocationChart } from "@/components/dashboard/LocationChart";
 import { ApplicationsTable } from "@/components/dashboard/ApplicationsTable";
 import { ApplicationForm } from "@/components/dashboard/ApplicationForm";
 import { useApplications } from "@/hooks/useApplications";
@@ -58,10 +59,11 @@ const Index = () => {
         </section>
 
         {/* Charts */}
-        <section className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <section className="mb-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <StatusChart applications={applications} />
           <TimelineChart applications={applications} />
           <DepartmentChart applications={applications} />
+          <LocationChart applications={applications} />
         </section>
 
         {/* Applications Table */}

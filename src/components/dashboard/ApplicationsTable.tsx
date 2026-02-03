@@ -46,7 +46,7 @@ interface ApplicationsTableProps {
   onDelete: (id: string) => void;
 }
 
-type SortKey = "company" | "position" | "department" | "status" | "dateApplied";
+type SortKey = "company" | "position" | "department" | "location" | "status" | "dateApplied";
 type SortOrder = "asc" | "desc";
 
 export function ApplicationsTable({
@@ -169,6 +169,9 @@ export function ApplicationsTable({
               <TableHead className="hidden md:table-cell">
                 <SortButton column="department" label="Department" />
               </TableHead>
+              <TableHead className="hidden lg:table-cell">
+                <SortButton column="location" label="Location" />
+              </TableHead>
               <TableHead>
                 <SortButton column="status" label="Status" />
               </TableHead>
@@ -181,7 +184,7 @@ export function ApplicationsTable({
           <TableBody>
             {filteredAndSorted.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center">
+                <TableCell colSpan={8} className="h-24 text-center">
                   No applications found.
                 </TableCell>
               </TableRow>
@@ -212,6 +215,9 @@ export function ApplicationsTable({
                       <TableCell>{app.position}</TableCell>
                       <TableCell className="hidden md:table-cell">
                         {app.department}
+                      </TableCell>
+                      <TableCell className="hidden lg:table-cell">
+                        {app.location || "—"}
                       </TableCell>
                       <TableCell>
                         <StatusBadge status={app.status} />
@@ -245,7 +251,7 @@ export function ApplicationsTable({
                     {app.notes && (
                       <CollapsibleContent asChild>
                         <TableRow className="bg-muted/50">
-                          <TableCell colSpan={7} className="py-2 pl-12">
+                          <TableCell colSpan={8} className="py-2 pl-12">
                             <div className="text-sm text-muted-foreground">
                               <span className="font-medium">Notes:</span> {app.notes}
                             </div>

@@ -47,6 +47,7 @@ const formSchema = z.object({
   position: z.string().min(1, "Position is required"),
   departmentSelect: z.string().min(1, "Department is required"),
   customDepartment: z.string().optional(),
+  location: z.string().min(1, "Location is required"),
   status: z.enum(STATUS_OPTIONS as [ApplicationStatus, ...ApplicationStatus[]]),
   dateApplied: z.date({ required_error: "Application date is required" }),
   notes: z.string(),
@@ -82,6 +83,7 @@ export function ApplicationForm({
       position: "",
       departmentSelect: "Engineering",
       customDepartment: "",
+      location: "",
       status: "Applied",
       dateApplied: new Date(),
       notes: "",
@@ -99,6 +101,7 @@ export function ApplicationForm({
         position: application.position,
         departmentSelect: isPredefined ? application.department : "Other",
         customDepartment: isPredefined ? "" : application.department,
+        location: application.location || "",
         status: application.status,
         dateApplied: new Date(application.dateApplied),
         notes: application.notes,
@@ -109,6 +112,7 @@ export function ApplicationForm({
         position: "",
         departmentSelect: "Engineering",
         customDepartment: "",
+        location: "",
         status: "Applied",
         dateApplied: new Date(),
         notes: "",
@@ -125,6 +129,7 @@ export function ApplicationForm({
       company: values.company,
       position: values.position,
       department,
+      location: values.location,
       status: values.status,
       dateApplied: values.dateApplied.toISOString(),
       notes: values.notes,
@@ -163,6 +168,19 @@ export function ApplicationForm({
                   <FormLabel>Position</FormLabel>
                   <FormControl>
                     <Input placeholder="Job position" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Location</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., New York, USA or Remote" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
