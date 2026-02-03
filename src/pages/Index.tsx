@@ -11,9 +11,11 @@ import { ApplicationForm } from "@/components/dashboard/ApplicationForm";
 import { useApplications } from "@/hooks/useApplications";
 import { Application } from "@/types/application";
 import { triggerSuccessConfetti } from "@/lib/confetti";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const { applications, addApplication, updateApplication, deleteApplication } = useApplications();
+  const { toast } = useToast();
   const [formOpen, setFormOpen] = useState(false);
   const [editingApp, setEditingApp] = useState<Application | null>(null);
 
@@ -30,10 +32,28 @@ const Index = () => {
   const handleSubmit = (data: Omit<Application, "id" | "createdAt" | "updatedAt">) => {
     if (editingApp) {
       updateApplication(editingApp.id, data);
+      toast({
+        title: "Application updated",
+        description: `Updated ${data.position} at ${data.company}`,
+      });
     } else {
       addApplication(data);
       triggerSuccessConfetti();
+      toast({
+        title: "Application added! 🎉",
+        description: `Added ${data.position} at ${data.company}`,
+      });
     }
+  };
+
+  const handleDelete = (id: string) => {
+    const app = applications.find((a) => a.id === id);
+    deleteApplication(id);
+    toast({
+      title: "Application deleted",
+      description: app ? `Removed ${app.position} at ${app.company}` : "Application removed",
+      variant: "destructive",
+    });
   };
 
   return (
@@ -74,7 +94,7 @@ const Index = () => {
           <ApplicationsTable
             applications={applications}
             onEdit={handleEdit}
-            onDelete={deleteApplication}
+            onDelete={handleDelete}
           />
         </section>
 
