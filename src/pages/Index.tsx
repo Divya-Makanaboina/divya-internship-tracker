@@ -10,6 +10,7 @@ import { ApplicationsTable } from "@/components/dashboard/ApplicationsTable";
 import { ApplicationForm } from "@/components/dashboard/ApplicationForm";
 import { useApplications } from "@/hooks/useApplications";
 import { Application } from "@/types/application";
+import { triggerSuccessConfetti } from "@/lib/confetti";
 
 const Index = () => {
   const { applications, addApplication, updateApplication, deleteApplication } = useApplications();
@@ -31,6 +32,7 @@ const Index = () => {
       updateApplication(editingApp.id, data);
     } else {
       addApplication(data);
+      triggerSuccessConfetti();
     }
   };
 
@@ -47,7 +49,7 @@ const Index = () => {
               Track and analyze your internship applications
             </p>
           </div>
-          <Button onClick={handleAdd} className="w-full sm:w-auto">
+          <Button onClick={handleAdd} className="btn-cta w-full sm:w-auto">
             <Plus className="mr-2 h-4 w-4" />
             Add Application
           </Button>
