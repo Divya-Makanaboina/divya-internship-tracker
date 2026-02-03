@@ -27,7 +27,7 @@ export function DepartmentChart({ applications }: DepartmentChartProps) {
 
   if (data.length === 0) {
     return (
-      <Card>
+      <Card className="transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/50">
         <CardHeader>
           <CardTitle className="text-base">Department Distribution</CardTitle>
         </CardHeader>
@@ -39,7 +39,7 @@ export function DepartmentChart({ applications }: DepartmentChartProps) {
   }
 
   return (
-    <Card>
+    <Card className="transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-primary/50">
       <CardHeader>
         <CardTitle className="text-base">Department Distribution</CardTitle>
       </CardHeader>
