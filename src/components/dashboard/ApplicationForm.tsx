@@ -51,6 +51,9 @@ const formSchema = z.object({
   status: z.enum(STATUS_OPTIONS as [ApplicationStatus, ...ApplicationStatus[]]),
   dateApplied: z.date({ required_error: "Application date is required" }),
   notes: z.string(),
+  portalLink: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
+  portalUsername: z.string().optional(),
+  portalPassword: z.string().optional(),
 }).refine((data) => {
   if (data.departmentSelect === "Other") {
     return data.customDepartment && data.customDepartment.trim().length > 0;
@@ -87,6 +90,9 @@ export function ApplicationForm({
       status: "Applied",
       dateApplied: new Date(),
       notes: "",
+      portalLink: "",
+      portalUsername: "",
+      portalPassword: "",
     },
   });
 
@@ -105,6 +111,9 @@ export function ApplicationForm({
         status: application.status,
         dateApplied: new Date(application.dateApplied),
         notes: application.notes,
+        portalLink: application.portalLink || "",
+        portalUsername: application.portalUsername || "",
+        portalPassword: application.portalPassword || "",
       });
     } else {
       form.reset({
@@ -116,6 +125,9 @@ export function ApplicationForm({
         status: "Applied",
         dateApplied: new Date(),
         notes: "",
+        portalLink: "",
+        portalUsername: "",
+        portalPassword: "",
       });
     }
   }, [application, form, open]);
@@ -133,6 +145,9 @@ export function ApplicationForm({
       status: values.status,
       dateApplied: values.dateApplied.toISOString(),
       notes: values.notes,
+      portalLink: values.portalLink || "",
+      portalUsername: values.portalUsername || "",
+      portalPassword: values.portalPassword || "",
     });
     onOpenChange(false);
   };
@@ -308,6 +323,47 @@ export function ApplicationForm({
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="portalLink"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Application Portal Link</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://careers.company.com/apply" type="url" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="portalUsername"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Portal Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Username or email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="portalPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Portal Password</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Password" type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className="flex justify-end gap-2">
               <Button
                 type="button"
