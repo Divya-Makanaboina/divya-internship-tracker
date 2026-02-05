@@ -10,13 +10,12 @@ const ScrollArea = React.forwardRef<
   <ScrollAreaPrimitive.Root
     ref={ref}
     className={cn(
-      // Ensure interactive children (inputs, selects, etc.) remain clickable even when used inside overlays/dialogs.
-      "relative overflow-hidden pointer-events-auto",
+      "relative overflow-hidden",
       className,
     )}
     {...props}
   >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit] pointer-events-auto">
+    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
       {children}
     </ScrollAreaPrimitive.Viewport>
     <ScrollBar />
