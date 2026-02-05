@@ -20,6 +20,9 @@ export interface Application {
   status: ApplicationStatus;
   dateApplied: string;
   notes: string;
+  portalLink: string; // Link to job application portal
+  portalUsername: string; // Username for the portal
+  portalPassword: string; // Password for the portal
   createdAt: string;
   updatedAt: string;
 }
