@@ -155,16 +155,17 @@ export function ApplicationForm({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] max-h-[90vh] flex flex-col">
+      <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>
             {application ? "Edit Application" : "Add Application"}
           </DialogTitle>
         </DialogHeader>
-        <ScrollArea className="flex-1 pr-4">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-            <FormField
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col flex-1 overflow-hidden">
+            <ScrollArea className="flex-1 pr-4">
+              <div className="space-y-4 pb-4">
+                <FormField
               control={form.control}
               name="company"
               render={({ field }) => (
@@ -338,49 +339,50 @@ export function ApplicationForm({
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="portalUsername"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Portal Username</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Username or email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="portalPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Portal Password</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Password" type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-              <div className="flex justify-end gap-2 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => onOpenChange(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit">
-                  {application ? "Save Changes" : "Add Application"}
-                </Button>
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="portalUsername"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Portal Username</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Username or email" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="portalPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Portal Password</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Password" type="password" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-            </form>
-          </Form>
-        </ScrollArea>
+            </ScrollArea>
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">
+                {application ? "Save Changes" : "Add Application"}
+              </Button>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
