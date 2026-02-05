@@ -190,3 +190,11 @@ All colors MUST be HSL.
 .btn-cta:active {
   transform: translateY(0) scale(0.98);
 }
+
+/* Fix for Radix Dialog scroll-lock disabling pointer events on form fields */
+[data-radix-dialog-content],
+[data-radix-dialog-content] *,
+[data-radix-scroll-area-viewport],
+[data-radix-scroll-area-viewport] * {
+  pointer-events: auto !important;
+}
