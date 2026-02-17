@@ -136,7 +136,7 @@ export function ApplicationForm({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-hidden flex flex-col">
+      <DialogContent className="sm:max-w-[425px] max-h-[85vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>
             {application ? "Edit Application" : "Add Application"}
@@ -144,7 +144,7 @@ export function ApplicationForm({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col flex-1 overflow-hidden">
-            <ScrollArea className="flex-1 pr-4">
+            <ScrollArea className="flex-1 max-h-[60vh] pr-4" type="always">
               <div className="space-y-4 pb-4">
                 <BasicInfoFields form={form} />
                 <CategoryFields form={form} selectedDepartment={selectedDepartment} />
