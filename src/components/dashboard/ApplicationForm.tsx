@@ -9,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Form } from "@/components/ui/form";
 import {
   Application,
@@ -144,14 +143,14 @@ export function ApplicationForm({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col flex-1 overflow-hidden">
-            <ScrollArea className="flex-1 max-h-[60vh] pr-4" type="always">
+            <div className="flex-1 overflow-y-auto pr-2 max-h-[50vh]">
               <div className="space-y-4 pb-4">
                 <BasicInfoFields form={form} />
                 <CategoryFields form={form} selectedDepartment={selectedDepartment} />
                 <DateNotesFields form={form} />
                 <PortalFields form={form} />
               </div>
-            </ScrollArea>
+            </div>
             <div className="flex justify-end gap-2 pt-4 border-t">
               <Button
                 type="button"
