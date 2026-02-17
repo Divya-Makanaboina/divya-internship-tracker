@@ -54,6 +54,7 @@ interface ApplicationsTableProps {
   applications: Application[];
   onEdit: (application: Application) => void;
   onDelete: (id: string) => void;
+  onStatusChange: (id: string, status: ApplicationStatus) => void;
 }
 
 type SortKey = "company" | "position" | "department" | "location" | "status" | "dateApplied";
@@ -63,6 +64,7 @@ export function ApplicationsTable({
   applications,
   onEdit,
   onDelete,
+  onStatusChange,
 }: ApplicationsTableProps) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | "all">("all");
@@ -245,7 +247,21 @@ export function ApplicationsTable({
                         {app.location || "—"}
                       </TableCell>
                       <TableCell>
-                        <StatusBadge status={app.status} />
+                        <Select
+                          value={app.status}
+                          onValueChange={(value) => onStatusChange(app.id, value as ApplicationStatus)}
+                        >
+                          <SelectTrigger className="h-7 w-auto border-none bg-transparent p-0 shadow-none focus:ring-0">
+                            <StatusBadge status={app.status} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {STATUS_OPTIONS.map((status) => (
+                              <SelectItem key={status} value={status}>
+                                <StatusBadge status={status} />
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </TableCell>
                       <TableCell className="hidden sm:table-cell">
                         {format(parseISO(app.dateApplied), "MMM d, yyyy")}

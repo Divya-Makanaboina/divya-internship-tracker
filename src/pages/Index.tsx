@@ -56,6 +56,15 @@ const Index = () => {
     });
   };
 
+  const handleStatusChange = (id: string, status: Application["status"]) => {
+    updateApplication(id, { status });
+    const app = applications.find((a) => a.id === id);
+    toast({
+      title: "Status updated",
+      description: app ? `${app.company} → ${status}` : `Status changed to ${status}`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -95,6 +104,7 @@ const Index = () => {
             applications={applications}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            onStatusChange={handleStatusChange}
           />
         </section>
 
