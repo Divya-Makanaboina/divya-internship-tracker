@@ -72,7 +72,7 @@ const Index = () => {
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">
-              Internship Tracker
+              Divya's Internship Tracker
             </h1>
             <p className="text-muted-foreground">
               Track and analyze your internship applications
