@@ -8,10 +8,10 @@ interface StatusChartProps {
 }
 
 const STATUS_COLORS: Record<ApplicationStatus, string> = {
-  Applied: "hsl(217, 91%, 60%)",
-  Interview: "hsl(45, 93%, 47%)",
-  Offer: "hsl(142, 76%, 36%)",
-  Rejected: "hsl(0, 84%, 60%)",
+  Applied: "hsl(var(--chart-1))",
+  Interview: "hsl(var(--chart-2))",
+  Offer: "hsl(var(--chart-3))",
+  Rejected: "hsl(var(--chart-4))",
 };
 
 const chartConfig = {
